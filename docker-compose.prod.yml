@@ -1,0 +1,18 @@
+version: "3.6"
+
+services:
+  bliss.api:
+    image: ${DOCKER_REGISTRY-}blissapi
+    container_name: bliss.api
+    build:
+      context: .
+      dockerfile: src/Bliss.API/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ~/.aspnet/https:/root/.aspnet/https:ro
+      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro

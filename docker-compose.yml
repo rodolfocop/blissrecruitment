@@ -1,0 +1,9 @@
+version: "3.6"
+
+services:
+  bliss.api:
+    image: ${DOCKER_REGISTRY-}blissapi
+    container_name: bliss.api
+    build:
+      context: .
+      dockerfile: src/Bliss.API/Dockerfile

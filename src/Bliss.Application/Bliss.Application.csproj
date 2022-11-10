@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetCore.Results" Version="16.63.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="RestSharp" Version="108.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bliss.Database\Bliss.Database.csproj" />
+    <ProjectReference Include="..\Bliss.Model\Bliss.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Auth\" />
+    <None Remove="RestSharp" />
+    <None Remove="AtividadesCriterioItem\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="AtividadesCriterioItem\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="AtividadesCriterioItem\**" />
+  </ItemGroup>
+</Project>

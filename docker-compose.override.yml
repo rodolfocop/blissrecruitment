@@ -1,0 +1,55 @@
+version: "3.6"
+
+services:
+  bliss.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "8080:80"
+      - "5200:443"
+    volumes:
+      - ~/.aspnet/https:/root/.aspnet/https:ro
+      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+    depends_on:
+      - bliss.api.postgres
+    networks: 
+      - net
+
+  bliss.api.postgres:
+    image: postgres:11-alpine
+    container_name: avaliacao-bliss-postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Password_1
+      - POSTGRES_DB=bliss
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - "15432:5432"
+    volumes:
+      - bliss-postgres-data:/var/lib/postgresql/data
+    networks: 
+      - net
+
+  bliss.api.flyway:
+    image: flyway/flyway:7
+    container_name: bliss-flyway
+    restart: on-failure
+    command: -url=jdbc:postgresql://bliss.api.postgres:5432/bliss -schemas=migration -user=admin -password=Password_1 migrate
+    environment:
+      - FLYWAY_EDITION=community
+    volumes:
+      - ./postgresdb/scripts:/flyway/sql
+    depends_on:
+      - bliss.api.postgres
+      - bliss.api
+    networks: 
+      - net
+
+volumes:
+  bliss-postgres-data:
+
+
+networks: 
+  net:
+    driver: bridge
